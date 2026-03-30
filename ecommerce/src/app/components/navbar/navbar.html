@@ -1,0 +1,98 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" routerLink="/">
+        <i class="bi bi-shop"></i> E-Commerce
+      </a>
+      
+      <button 
+        class="navbar-toggler" 
+        type="button" 
+        data-bs-toggle="collapse" 
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav" 
+        aria-expanded="false" 
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <!-- Home -->
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+              <i class="bi bi-house"></i> Accueil
+            </a>
+          </li>
+          
+          <!-- Loading state -->
+          <li class="nav-item" *ngIf="categoriesStore.loading()">
+            <span class="nav-link">
+              <span class="spinner-border spinner-border-sm" role="status"></span>
+              Chargement...
+            </span>
+          </li>
+          
+          <!-- Error state -->
+          <li class="nav-item" *ngIf="categoriesStore.error()">
+            <span class="nav-link text-danger">
+              <i class="bi bi-exclamation-triangle"></i> {{ categoriesStore.error() }}
+            </span>
+          </li>
+          
+          <!-- Categories -->
+          <li class="nav-item dropdown" *ngFor="let category of categoriesStore.rootCategories()">
+            <!-- Sans enfants -->
+            <a 
+              *ngIf="!hasChildren(category.id)"
+              class="nav-link" 
+              [routerLink]="['/catalog', category.id]"
+              routerLinkActive="active">
+              {{ category.name }}
+            </a>
+            
+            <!-- Avec enfants (dropdown) -->
+            <a 
+              *ngIf="hasChildren(category.id)"
+              class="nav-link dropdown-toggle" 
+              [routerLink]="['/catalog', category.id]"
+              routerLinkActive="active"
+              role="button"
+              [attr.data-bs-toggle]="'dropdown'"
+              aria-expanded="false">
+              {{ category.name }}
+            </a>
+            
+            <ul class="dropdown-menu" *ngIf="hasChildren(category.id)">
+              <li>
+                <a class="dropdown-item" [routerLink]="['/catalog', category.id]">
+                  <strong>Tous les {{ category.name }}</strong>
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li *ngFor="let subCategory of getChildren(category.id)">
+                <a class="dropdown-item" [routerLink]="['/catalog', subCategory.id]">
+                  {{ subCategory.name }}
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        
+        <!-- Right side items -->
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/basket">
+              <i class="bi bi-cart"></i> Panier
+              <span class="badge bg-danger"><app-basket-item-count></app-basket-item-count></span>
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/login">
+              <i class="bi bi-person"></i> Connexion
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>

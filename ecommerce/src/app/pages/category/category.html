@@ -1,0 +1,60 @@
+<div class="category-page" *ngIf="categoriesStore.currentCategoryResponse() as response">
+  
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+      <div class="container">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/"><i class="bi bi-house"></i> Accueil</a>
+          </li>
+          <li class="breadcrumb-item" *ngFor="let crumb of response.breadcrumb.slice(0, -1)">
+            <a [routerLink]="['/catalog', crumb.id]">{{ crumb.name }}</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            {{ response.category.name }}
+          </li>
+        </ol>
+      </div>
+    </nav>
+  
+    <div class="container">
+      
+      <!-- Category Header -->
+      <div class="category-header">
+        <h1 class="category-title">{{ response.category.name }}</h1>
+      </div>
+  
+      <!-- Sub-categories -->
+      <div class="subcategories-section" *ngIf="response.subCategories.length > 0">
+        <h2 class="section-title">Sous-catégories</h2>
+        <div class="subcategories-grid">
+          <a [routerLink]="['/catalog', response.category.id,subCat.id]" 
+             class="subcategory-card" 
+             *ngFor="let subCat of response.subCategories">
+            <div class="subcategory-icon">
+              <i class="bi bi-folder"></i>
+            </div>
+            <h3 class="subcategory-name">{{ subCat.name }}</h3>
+            <i class="bi bi-arrow-right subcategory-arrow"></i>
+          </a>
+        </div>
+      </div>
+  
+     
+  </div>
+  
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="categoriesStore.categoryLoading()">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+    <p class="mt-3 text-muted">Chargement...</p>
+  </div>
+  
+  <!-- Error State -->
+  <div class="container" *ngIf="categoriesStore.categoryError()">
+    <div class="alert alert-danger mt-5" role="alert">
+      <i class="bi bi-exclamation-triangle"></i>
+      {{ categoriesStore.categoryError() }}
+    </div>
+  </div>

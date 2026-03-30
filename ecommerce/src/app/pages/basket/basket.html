@@ -1,0 +1,128 @@
+<div class="basket-page">
+    <div class="container">
+      
+      <!-- Header -->
+      <div class="basket-header">
+        <h1 class="basket-title">
+          <i class="bi bi-cart3"></i> Mon Panier
+        </h1>
+        <span class="basket-count" *ngIf="cartStore.itemCount() > 0">
+          {{ cartStore.itemCount() }} article{{ cartStore.itemCount() > 1 ? 's' : '' }}
+        </span>
+      </div>
+  
+      <!-- Loading -->
+      <div class="loading-container" *ngIf="cartStore.isLoading()">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+        <p class="mt-3 text-muted">Chargement du panier...</p>
+      </div>
+  
+      <!-- Empty Basket -->
+      <div *ngIf="cartStore.isInitialized() && cartStore.itemCount() === 0">
+        <div class="empty-basket-icon">
+          <i class="bi bi-cart-x"></i>
+        </div>
+        <h2>Votre panier est vide</h2>
+        <p>Découvrez nos produits et commencez vos achats !</p>
+        <a routerLink="/" class="btn btn-primary btn-lg">
+          <i class="bi bi-shop"></i> Continuer mes achats
+        </a>
+      </div>
+  
+      <!-- Basket Content -->
+      <div class="basket-content" *ngIf="!cartStore.isLoading() && cartStore.itemCount() > 0">
+        <div class="row">
+          
+          <!-- Items List -->
+          <div class="col-lg-8">
+            <div class="basket-items">
+              
+              <!-- Clear basket button -->
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="section-title">Articles ({{ cartStore.itemCount() }})</h3>
+                <button class="btn btn-outline-danger btn-sm" (click)="clearBasket()">
+                  <i class="bi bi-trash"></i> Vider le panier
+                </button>
+              </div>
+  
+              <!-- Item Card -->
+              <div class="basket-item" *ngFor="let item of cartStore.productLineItems()">
+                <div class="item-image">
+                  <img 
+                    [src]="item.product.imageUrl || 'assets/placeholder.jpg'" 
+                    [alt]="item.product.name">
+                </div>
+  
+                <div class="item-details">
+                  <h4 class="item-name">{{ item.product.name }}</h4>
+                  <p class="item-description">{{ item.product.description }}</p>
+                  <p class="item-sku">
+                    <span class="badge bg-secondary">{{ item.product.sku }}</span>
+                  </p>
+                </div>
+  
+                <div class="item-quantity">
+                  <label class="quantity-label">Quantité</label>
+                  <div class="quantity-controls">
+                    <button 
+                      class="quantity-btn" 
+                      (click)="updateQuantity(item, item.quantity - 1)"
+                      [disabled]="item.quantity <= 1">
+                      <i class="bi bi-dash"></i>
+                    </button>
+                    <input 
+                      type="number" 
+                      class="quantity-input" 
+                      [value]="item.quantity"
+                      (change)="updateQuantity(item, +$any($event.target).value)"
+                      min="1"
+                      max="99">
+                    <button 
+                      class="quantity-btn" 
+                      (click)="updateQuantity(item, item.quantity + 1)"
+                      [disabled]="item.quantity >= 99">
+                      <i class="bi bi-plus"></i>
+                    </button>
+                  </div>
+                </div>
+  
+                <div class="item-price">
+                  <p class="unit-price">{{ item.unitPrice | currency:'EUR' }} / unité</p>
+                  <p class="total-price">{{ getItemTotal(item) | currency:'EUR' }}</p>
+                </div>
+  
+                <div class="item-actions">
+                  <button 
+                    class="btn btn-link text-danger" 
+                    (click)="removeItem(item)"
+                    title="Supprimer">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </div>
+  
+            </div>
+  
+            <!-- Continue Shopping -->
+            <div class="continue-shopping">
+              <a routerLink="/" class="btn btn-outline-primary">
+                <i class="bi bi-arrow-left"></i> Continuer mes achats
+              </a>
+            </div>
+          </div>
+  
+          <!-- Summary -->
+          <div class="col-lg-4">
+            <app-basket-summary 
+              [subtotal]="cartStore.total()"
+              [itemCount]="cartStore.itemCount()">
+            </app-basket-summary>
+          </div>
+  
+        </div>
+      </div>
+  
+    </div>
+  </div>

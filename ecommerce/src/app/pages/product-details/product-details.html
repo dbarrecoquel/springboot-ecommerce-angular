@@ -1,0 +1,48 @@
+<div *ngIf="store.product() as product" class="product-container">
+
+    <!-- IMAGE -->
+    <div class="product-image">
+      <img 
+        [src]="product.imageUrl"
+        [alt]="product.name"
+        appFallbackImage>
+  
+      <span class="product-badge" *ngIf="product.stockQuantity === 0">
+        Rupture
+      </span>
+    </div>
+  
+    <!-- INFOS -->
+    <div class="product-info">
+      <h3 class="product-name">{{ product.name }}</h3>
+      <p class="product-description">{{ product.description }}</p>
+  
+      <div class="product-footer">
+        <span class="product-price">
+          {{ product.price | currency:'EUR' }}
+        </span>
+      </div>
+  
+      <!-- ACTIONS -->
+      <div class="product-actions">
+  
+        <input
+          type="number"
+          min="1"
+          [max]="product.stockQuantity"
+          [(ngModel)]="quantity"
+          [disabled]="product.stockQuantity === 0"
+        />
+  
+        <button
+          class="add-to-cart-btn"
+          (click)="addToCart(product)"
+          [disabled]="product.stockQuantity === 0">
+          Ajouter au panier
+        </button>
+  
+      </div>
+  
+    </div>
+  
+  </div>
