@@ -77,4 +77,20 @@ import { CartService } from "../services/cart.service";
             }
         })
       }
+
+      updateQuantity(id:number, quantity: number){
+        const request = {
+            quantity
+        }
+        this.basketService.updateQuantity(id,request).subscribe({
+            next : () => {
+                this.loadBasket();
+            },
+            error : (err) => {
+                console.error('Error deleting item');
+                this.loading.set(false);
+            }
+        })
+      
+      }
   }

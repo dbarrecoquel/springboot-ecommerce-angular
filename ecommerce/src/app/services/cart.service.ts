@@ -7,6 +7,9 @@ import { AddToBasketRequest } from "../models/basket/addtobasketrequest.model";
 export interface MessageResponse {
     message : string
 }
+export interface UpdateQuantityRequest {
+    quantity : number
+}
 @Injectable({
     providedIn: 'root',
 })
@@ -34,6 +37,12 @@ export class CartService {
     public clearBasket() : Observable<MessageResponse> {
 
         return this.httpClient.delete<MessageResponse>(`${environment.apiUrl}/api/basket/clear`, {withCredentials : true})
+
+    }
+
+    public updateQuantity(id : number, request : UpdateQuantityRequest ) : Observable<MessageResponse> {
+
+        return this.httpClient.post<MessageResponse>(`${environment.apiUrl}/api/basket/update/${id}`,request, {withCredentials : true});
 
     }
 

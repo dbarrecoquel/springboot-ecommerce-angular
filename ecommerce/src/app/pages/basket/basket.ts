@@ -29,7 +29,7 @@ export class Basket implements OnInit {
       return;
     }
     
-    console.log('Update quantity:', item, newQuantity);
+    this.cartStore.updateQuantity(item.id, newQuantity);
   }
   
   removeItem(item: ProductLineItem): void {
