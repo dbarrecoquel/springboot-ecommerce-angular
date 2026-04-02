@@ -86,7 +86,11 @@
               <span class="badge bg-danger"><app-basket-item-count></app-basket-item-count></span>
             </a>
           </li>
-          
+          @if (userStore.isLoggedIn()) {
+          <li class="nav-item">   
+               <a routerLink="/profile-details">Profile</a>
+         </li>
+        }
           <li class="nav-item">
              @if (!userStore.isLoggedIn()) {
                 <a routerLink="/login">Connexion</a>

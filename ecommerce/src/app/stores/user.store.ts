@@ -17,7 +17,6 @@ export class UserStore {
 
   isLoading = this.loading;
 
-  // ✅ computed = réactif
   isLoggedIn = computed(() => {
     const token = this.token();
 
@@ -85,7 +84,18 @@ export class UserStore {
         })
       );
   }
-
+  loadProfile(){
+    this.loading.set(true);
+    return this.userService.getProfile().pipe(
+        tap({
+            next : (res) => {
+                this.user.set(res);
+                this.loading.set(false);
+            },
+            error: () => this.loading.set(false)
+        })
+    )
+  }
   logout() {
     this.token.set(null);
     this.user.set(null);

@@ -8,6 +8,8 @@ import { Basket } from './pages/basket/basket';
 import { Register } from './pages/register/register';
 import { authGuard } from './guards/auth.guard';
 import { CheckoutAddresses } from './pages/checkout/checkout-addresses/checkout-addresses';
+import { Profile } from './pages/profile/profile';
+import { ProfileDetails } from './pages/profile/profile-details/profile-details';
 
 export const routes: Routes = [
   {
@@ -47,6 +49,16 @@ export const routes: Routes = [
     path: 'checkout-addresses',
     component : CheckoutAddresses,
     canActivate: [authGuard] 
+  },
+  {
+    path:'profile',
+    component : Profile,
+    canActivate : [authGuard]
+  },
+  {
+    path:'profile-details',
+    component : ProfileDetails,
+    canActivate : [authGuard]
   }
  
 ];
