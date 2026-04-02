@@ -1,7 +1,8 @@
-import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
+import { inject, Injectable, PLATFORM_ID, signal, computed } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { tap } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -9,20 +10,51 @@ import { isPlatformBrowser } from '@angular/common';
 export class UserStore {
 
   private token = signal<string | null>(null);
-  private user = signal<any | null>(null); // ✅ AJOUT ICI
+  private user = signal<any | null>(null);
   private loading = signal(false);
 
   private platformId = inject(PLATFORM_ID);
 
-  // exposer au template
   isLoading = this.loading;
-  isLoggedIn = () => !!this.token();
-  currentUser = this.user; // optionnel pour le template
+
+  // ✅ computed = réactif
+  isLoggedIn = computed(() => {
+    const token = this.token();
+
+    if (!token) return false;
+
+    if (this.isTokenExpired(token)) {
+      this.logout();
+      return false;
+    }
+
+    return true;
+  });
+
+  currentUser = this.user;
 
   constructor(private userService: UserService) {
     if (isPlatformBrowser(this.platformId)) {
       const token = localStorage.getItem('token');
-      if (token) this.token.set(token);
+
+      if (token && !this.isTokenExpired(token)) {
+        this.token.set(token);
+      } else {
+        this.logout(); 
+      }
+    }
+  }
+
+  private isTokenExpired(token: string): boolean {
+    try {
+      const decoded: any = jwtDecode(token);
+      const exp = decoded.exp;
+
+      if (!exp) return true;
+
+      return Date.now() >= exp * 1000;
+    } catch {
+      return true;
     }
   }
 
@@ -38,6 +70,7 @@ export class UserStore {
 
             if (authHeader) {
               const token = authHeader.replace('Bearer ', '');
+
               this.token.set(token);
 
               if (isPlatformBrowser(this.platformId)) {
@@ -45,9 +78,7 @@ export class UserStore {
               }
             }
 
-            // ✅ stocker le user
             this.user.set(res.body);
-
             this.loading.set(false);
           },
           error: () => this.loading.set(false)
@@ -57,7 +88,8 @@ export class UserStore {
 
   logout() {
     this.token.set(null);
-    this.user.set(null); // ✅ important
+    this.user.set(null);
+
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('token');
     }

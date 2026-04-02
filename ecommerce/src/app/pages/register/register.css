@@ -1,0 +1,223 @@
+.register-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    padding: 40px 0;
+  }
+  
+  .register-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    padding: 40px;
+    margin: 20px 0;
+  }
+  
+  /* Header */
+  .register-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .logo-circle {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  }
+  
+  .logo-circle i {
+    font-size: 2.5rem;
+    color: white;
+  }
+  
+  .register-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 8px;
+  }
+  
+  .register-subtitle {
+    color: #718096;
+    font-size: 1.1rem;
+  }
+  
+  /* Form Groups */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-label {
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 8px;
+    display: block;
+  }
+  
+  .form-label i {
+    color: #667eea;
+    margin-right: 5px;
+  }
+  
+  .form-control {
+    padding: 12px 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+  }
+  
+  .form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    outline: none;
+  }
+  
+  .form-control.is-invalid {
+    border-color: #e53e3e;
+  }
+  
+  .form-control.is-invalid:focus {
+    box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+  }
+  
+  .invalid-feedback {
+    display: block;
+    color: #e53e3e;
+    font-size: 0.875rem;
+    margin-top: 5px;
+  }
+  
+  /* Input Group */
+  .input-group .btn {
+    border: 2px solid #e2e8f0;
+    border-left: none;
+  }
+  
+  .input-group .form-control {
+    border-right: none;
+  }
+  
+  .input-group .form-control:focus + .btn {
+    border-color: #667eea;
+  }
+  
+  /* Password Strength */
+  .password-strength {
+    margin-top: 8px;
+  }
+  
+  .strength-bar {
+    height: 4px;
+    background: #e2e8f0;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 5px;
+  }
+  
+  .strength-fill {
+    height: 100%;
+    transition: all 0.3s ease;
+    width: 0%;
+  }
+  
+  .strength-fill.weak {
+    width: 33%;
+    background: #e53e3e;
+  }
+  
+  .strength-fill.medium {
+    width: 66%;
+    background: #ed8936;
+  }
+  
+  .strength-fill.strong {
+    width: 100%;
+    background: #48bb78;
+  }
+  
+  .strength-text {
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  
+  /* Submit Button */
+  .submit-btn {
+    margin-top: 30px;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    transition: all 0.3s ease;
+  }
+  
+  .submit-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  }
+  
+  .submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  /* Login Link */
+  .login-link {
+    text-align: center;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px solid #e2e8f0;
+  }
+  
+  .login-link p {
+    color: #718096;
+    margin: 0;
+  }
+  
+  .login-link a {
+    color: #667eea;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  
+  .login-link a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+  }
+  
+  /* Alerts */
+  .alert {
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  
+  /* Responsive */
+  @media (max-width: 576px) {
+    .register-card {
+      padding: 30px 20px;
+    }
+  
+    .register-title {
+      font-size: 1.75rem;
+    }
+  
+    .logo-circle {
+      width: 60px;
+      height: 60px;
+    }
+  
+    .logo-circle i {
+      font-size: 2rem;
+    }
+  }

@@ -88,9 +88,11 @@
           </li>
           
           <li class="nav-item">
-            <a class="nav-link" routerLink="/login">
-              <i class="bi bi-person"></i> Connexion
-            </a>
+             @if (!userStore.isLoggedIn()) {
+                <a routerLink="/login">Connexion</a>
+              } @else {
+                <button (click)="logout()">Déconnexion</button>
+              }
           </li>
         </ul>
       </div>

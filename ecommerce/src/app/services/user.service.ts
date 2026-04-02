@@ -1,7 +1,16 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "../environments/environment";
+
+export interface RegisterRequest {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +19,26 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  login(email: string, password: string): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/api/auth/login`, {
-      email,
-      password
-    });
+  login(email: string, password: string): Observable<HttpResponse<any>> {
+    return this.http.post<any>(
+      `${environment.apiUrl}/api/auth/login`,
+      {
+        email,
+        password
+      },
+      {
+        observe: 'response' 
+      }
+    );
+  }
+
+  register(request: RegisterRequest): Observable<HttpResponse<any>> {
+    return this.http.post<any>(
+      `${environment.apiUrl}/api/auth/register`,
+      request,
+      {
+        observe: 'response'
+      }
+    );
   }
 }

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CatalogCategoryStore } from '../../stores/catalogcategory.store';
 import { CatalogCategory } from '../../models/catalogcategory/catalogcategory.model';
 import { BasketItemCount } from '../basket-item-count/basket-item-count';
+import { UserStore } from '../../stores/user.store';
 
 @Component({
   selector: 'app-navbar',
@@ -15,14 +16,16 @@ import { BasketItemCount } from '../basket-item-count/basket-item-count';
 export class NavbarComponent implements OnInit {
   
   // Exposer le store au template
-  constructor(public categoriesStore: CatalogCategoryStore) {}
+  constructor(public categoriesStore: CatalogCategoryStore,
+              public userStore : UserStore,
+              private router : Router
+  ) {}
   
   ngOnInit(): void {
     // Charger les catégories au démarrage
     this.categoriesStore.loadCatalogCategories();
   }
   
-  // Méthode pour vérifier si une catégorie a des enfants
   hasChildren(categoryId: number): boolean {
     return this.categoriesStore.getSubCategories()(categoryId).length > 0;
   }
@@ -30,5 +33,9 @@ export class NavbarComponent implements OnInit {
   // Méthode pour obtenir les sous-catégories
   getChildren(categoryId: number): CatalogCategory[] {
     return this.categoriesStore.getSubCategories()(categoryId);
+  }
+  logout() {
+    this.userStore.logout();
+    this.router.navigate(['/home']); 
   }
 }
