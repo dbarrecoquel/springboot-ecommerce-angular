@@ -3,6 +3,8 @@ import { UserService } from '../services/user.service';
 import { tap } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 import { jwtDecode } from 'jwt-decode';
+import { Address } from '../models/address/address';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +14,12 @@ export class UserStore {
   private token = signal<string | null>(null);
   private user = signal<any | null>(null);
   private loading = signal(false);
-
+  private _addresses = signal<Address[]>([]);
+  private selectedAddress = signal<Address | null>(null);
   private platformId = inject(PLATFORM_ID);
+  private addressesLoaded = signal(false);
 
+  addressesLoaded$ = this.addressesLoaded;
   isLoading = this.loading;
 
   isLoggedIn = computed(() => {
@@ -31,6 +36,8 @@ export class UserStore {
   });
 
   currentUser = this.user;
+  addressesList = this._addresses;
+  selectedAddress$ = this.selectedAddress;
 
   constructor(private userService: UserService) {
     if (isPlatformBrowser(this.platformId)) {
@@ -86,16 +93,55 @@ export class UserStore {
   }
   loadProfile(){
     this.loading.set(true);
-    return this.userService.getProfile().pipe(
-        tap({
+    return this.userService.getProfile().subscribe({
             next : (res) => {
                 this.user.set(res);
                 this.loading.set(false);
             },
             error: () => this.loading.set(false)
-        })
+        }
     )
   }
+  loadAddresses() {
+    this.loading.set(true);
+    this.addressesLoaded.set(false);
+    this.userService.getAddresses().subscribe({
+      next: (res) => {
+        this._addresses.set(res);
+        this.loading.set(false);
+        this.addressesLoaded.set(true);
+      },
+      error: () => this.loading.set(false)
+    });
+  }
+  selectAddress(address: Address) {
+    this.selectedAddress.set(address);
+  }
+
+  clearSelection() {
+    this.selectedAddress.set(null);
+  }
+
+  createAddress(address: Address) {
+    this.userService.createAddress(address).subscribe({
+      next: (res) => {
+        this._addresses.update(list => [...list, res]);
+        this.clearSelection();
+      }
+    });
+  }
+
+  updateAddress(address: Address) {
+    this.userService.updateAddress(address).subscribe({
+      next: (res) => {
+        this._addresses.update(list =>
+          list.map(a => a.id === res.id ? res : a)
+        );
+        this.clearSelection();
+      }
+    });
+  }
+
   logout() {
     this.token.set(null);
     this.user.set(null);

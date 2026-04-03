@@ -53,4 +53,15 @@ export class UserService {
     return this.http.get<User>(
         `${environment.apiUrl}/api/profile`)
   }
+  getAddresses() : Observable<Address[]> {
+    return this.http.get<Address[]>(
+        `${environment.apiUrl}/api/profile/addresses`)
+  }
+  createAddress(address: Address) {
+    return this.http.post<Address>(`${environment.apiUrl}/api/profile/addresses`, address);
+  }
+  
+  updateAddress(address: Address) {
+    return this.http.put<Address>(`${environment.apiUrl}/api/profile/addresses/${address.id}`, address);
+  }
 }

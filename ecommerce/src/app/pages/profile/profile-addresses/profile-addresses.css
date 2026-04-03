@@ -1,0 +1,122 @@
+.addresses-container {
+    padding: 20px;
+  }
+  
+  .addresses-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .addresses-header h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #2d3748;
+  }
+  
+  .loading {
+    text-align: center;
+    padding: 60px 20px;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .empty-state i {
+    font-size: 4rem;
+    color: #cbd5e0;
+    margin-bottom: 20px;
+  }
+  
+  .empty-state p {
+    color: #718096;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+  }
+  
+  .addresses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+  
+  .address-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .address-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+  }
+  
+  .card-header {
+    padding: 15px 20px;
+    background: #f7fafc;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .card-header strong {
+    font-size: 1.1rem;
+    color: #2d3748;
+  }
+  
+  .badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  
+  .badge-billing {
+    background: #edf2f7;
+    color: #2d3748;
+  }
+  
+  .badge-shipping {
+    background: #bee3f8;
+    color: #2c5282;
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  
+  .card-body p {
+    margin: 5px 0;
+    color: #4a5568;
+    line-height: 1.6;
+  }
+  
+  .card-footer {
+    padding: 15px 20px;
+    background: #f7fafc;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    gap: 10px;
+  }
+  
+  @media (max-width: 768px) {
+    .addresses-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .addresses-header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 15px;
+    }
+  }

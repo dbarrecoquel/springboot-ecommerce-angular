@@ -1,6 +1,6 @@
-<app-profile-navigation></app-profile-navigation>
 
-<div class="profile-container" *ngIf="user$ | async as user">
+
+<div class="profile-container" *ngIf="userStore.currentUser() as user">
 
   <div class="profile-card">
 

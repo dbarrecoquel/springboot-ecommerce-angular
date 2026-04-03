@@ -10,6 +10,8 @@ import { authGuard } from './guards/auth.guard';
 import { CheckoutAddresses } from './pages/checkout/checkout-addresses/checkout-addresses';
 import { Profile } from './pages/profile/profile';
 import { ProfileDetails } from './pages/profile/profile-details/profile-details';
+import { ProfileAddresses } from './pages/profile/profile-addresses/profile-addresses';
+import { AddressForm } from './components/address/address-form/address-form';
 
 export const routes: Routes = [
   {
@@ -53,12 +55,34 @@ export const routes: Routes = [
   {
     path:'profile',
     component : Profile,
-    canActivate : [authGuard]
-  },
-  {
-    path:'profile-details',
-    component : ProfileDetails,
-    canActivate : [authGuard]
-  }
+    canActivate : [authGuard],
+    children: [
+        {
+          path: '',
+          redirectTo: 'profile-details',
+          pathMatch: 'full'
+        },
+        {
+          path: 'profile-details',
+          component: ProfileDetails,
+          canActivate : [authGuard]
+        },
+        {
+          path: 'addresses',
+          component: ProfileAddresses,
+          canActivate : [authGuard]
+        },
+        {
+            path: 'addresses/new',
+            component: AddressForm,
+            canActivate : [authGuard]
+          },
+          {
+            path: 'addresses/edit/:id',
+            component: AddressForm,
+            canActivate : [authGuard]
+          }
+      ]
+  }  
  
 ];
