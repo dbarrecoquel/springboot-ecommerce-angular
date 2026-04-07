@@ -12,6 +12,7 @@ import { Profile } from './pages/profile/profile';
 import { ProfileDetails } from './pages/profile/profile-details/profile-details';
 import { ProfileAddresses } from './pages/profile/profile-addresses/profile-addresses';
 import { AddressForm } from './components/address/address-form/address-form';
+import { EditProfileDetails } from './pages/profile/edit-profile-details/edit-profile-details';
 
 export const routes: Routes = [
   {
@@ -65,6 +66,11 @@ export const routes: Routes = [
         {
           path: 'profile-details',
           component: ProfileDetails,
+          canActivate : [authGuard]
+        },
+        {
+          path: 'profile-details/edit',
+          component: EditProfileDetails,
           canActivate : [authGuard]
         },
         {

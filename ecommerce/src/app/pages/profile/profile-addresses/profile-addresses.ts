@@ -28,4 +28,9 @@ export class ProfileAddresses implements OnInit {
   edit(address: Address) {
     this.router.navigate(['/profile/addresses/edit', address.id]);
   }
+  delete(address: Address) {
+    if (confirm('Voulez-vous vraiment supprimer cette adresse ?')) {
+      this.userStore.deleteAddress(address);
+    }
+  }
 }

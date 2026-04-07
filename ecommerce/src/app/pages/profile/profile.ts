@@ -11,11 +11,9 @@ import { ProfileNavigation } from '../../components/profile-navigation/profile-n
   templateUrl: './profile.html',
   styleUrl: './profile.css'
 })
-export class Profile implements OnInit {
+export class Profile  {
   
-  constructor(public userStore: UserStore) {}
+  constructor() {}
   
-  ngOnInit(): void {
-    this.userStore.loadProfile();
-  }
+ 
 }

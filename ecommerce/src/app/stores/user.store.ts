@@ -4,6 +4,7 @@ import { tap } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 import { jwtDecode } from 'jwt-decode';
 import { Address } from '../models/address/address';
+import { User } from '../models/user/user';
 
 
 @Injectable({
@@ -141,6 +142,14 @@ export class UserStore {
       }
     });
   }
+  deleteAddress(address: Address) {
+    this.userService.deleteAddress(address.id).subscribe({
+      next: (res) => {
+        this.loadAddresses()
+        this.clearSelection();
+      }
+    });
+  }
 
   logout() {
     this.token.set(null);
@@ -149,5 +158,12 @@ export class UserStore {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('token');
     }
+  }
+  updateProfile(request: User) {
+    this.userService.updateProfile(request).subscribe({
+      next: (res) => {
+        this.user.set(res);
+      }
+    });
   }
 }

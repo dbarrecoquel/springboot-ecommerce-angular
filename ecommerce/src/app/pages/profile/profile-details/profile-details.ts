@@ -3,6 +3,7 @@ import { UserStore } from '../../../stores/user.store';
 import { Observable } from 'rxjs';
 import { User } from '../../../models/user/user';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile-details',
@@ -13,10 +14,13 @@ import { CommonModule } from '@angular/common';
 export class ProfileDetails implements OnInit {
 
 
-  constructor(public userStore: UserStore){
+  constructor(public userStore: UserStore, private router: Router){
 
   }
   ngOnInit(): void {
     this.userStore.loadProfile();
+  }
+  editProfileDetails() {
+    this.router.navigate(['/profile/profile-details/edit']);
   }
 }
