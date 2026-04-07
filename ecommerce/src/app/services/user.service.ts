@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { environment } from "../environments/environment";
 import { Address } from "../models/address/address";
 import { User } from "../models/user/user";
+import { UpdatePasswordRequest } from "../models/user/updatePasswordRequest";
 
 export interface RegisterRequest {
   email: string;
@@ -69,5 +70,8 @@ export class UserService {
   }
   deleteAddress(id : number) : Observable<any> {
     return this.http.delete<any>(`${environment.apiUrl}/api/profile/addresses/${id}`);
+  }
+  updatePassword(request: UpdatePasswordRequest) : Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}/api/profile/password`, request);
   }
 }

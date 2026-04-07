@@ -13,6 +13,7 @@ import { ProfileDetails } from './pages/profile/profile-details/profile-details'
 import { ProfileAddresses } from './pages/profile/profile-addresses/profile-addresses';
 import { AddressForm } from './components/address/address-form/address-form';
 import { EditProfileDetails } from './pages/profile/edit-profile-details/edit-profile-details';
+import { UpdatePassword } from './pages/profile/update-password/update-password';
 
 export const routes: Routes = [
   {
@@ -71,6 +72,11 @@ export const routes: Routes = [
         {
           path: 'profile-details/edit',
           component: EditProfileDetails,
+          canActivate : [authGuard]
+        },
+        {
+          path: 'update-password',
+          component: UpdatePassword,
           canActivate : [authGuard]
         },
         {

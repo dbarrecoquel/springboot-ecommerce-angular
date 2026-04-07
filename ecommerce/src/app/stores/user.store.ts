@@ -5,6 +5,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { jwtDecode } from 'jwt-decode';
 import { Address } from '../models/address/address';
 import { User } from '../models/user/user';
+import { UpdatePasswordRequest } from '../models/user/updatePasswordRequest';
 
 
 @Injectable({
@@ -165,5 +166,15 @@ export class UserStore {
         this.user.set(res);
       }
     });
+  }
+  updatePassword(request: UpdatePasswordRequest) {
+    this.loading.set(true);
+    this.userService.updatePassword(request).subscribe({
+      next: () => {
+        this.loading.set(false);
+      },
+      error: () => this.loading.set(false),
+    });
+   
   }
 }

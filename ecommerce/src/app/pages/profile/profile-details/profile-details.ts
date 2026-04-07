@@ -23,4 +23,7 @@ export class ProfileDetails implements OnInit {
   editProfileDetails() {
     this.router.navigate(['/profile/profile-details/edit']);
   }
+  updatePassword() {
+    this.router.navigate(['/profile/update-password']);
+  }
 }
