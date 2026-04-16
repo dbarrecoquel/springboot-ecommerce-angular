@@ -13,6 +13,7 @@ export class BasketSummary {
   
   @Input() subtotal: number = 0;
   @Input() itemCount: number = 0;
+  @Input() nextLink : string = "";
   
   // Frais de livraison (à calculer selon la méthode choisie)
   get shippingCost(): number {

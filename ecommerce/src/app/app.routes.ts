@@ -14,6 +14,7 @@ import { ProfileAddresses } from './pages/profile/profile-addresses/profile-addr
 import { AddressForm } from './components/address/address-form/address-form';
 import { EditProfileDetails } from './pages/profile/edit-profile-details/edit-profile-details';
 import { UpdatePassword } from './pages/profile/update-password/update-password';
+import { CheckoutShipping } from './pages/checkout/checkout-shipping/checkout-shipping';
 
 export const routes: Routes = [
   {
@@ -52,6 +53,11 @@ export const routes: Routes = [
   {
     path: 'checkout-addresses',
     component : CheckoutAddresses,
+    canActivate: [authGuard] 
+  },
+  {
+    path: 'checkout-shipping',
+    component : CheckoutShipping,
     canActivate: [authGuard] 
   },
   {

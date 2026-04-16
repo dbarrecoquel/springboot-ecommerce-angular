@@ -1,1 +1,200 @@
-<p>checkout-addresses works!</p>
+<div class="checkout-addresses-page">
+  <div class="container">
+
+    <!-- Progress Bar -->
+    <div class="checkout-progress">
+      <div class="progress-step active">
+        <div class="step-number">1</div>
+        <div class="step-label">Adresses</div>
+      </div>
+      <div class="progress-line"></div>
+      <div class="progress-step">
+        <div class="step-number">2</div>
+        <div class="step-label">Livraison</div>
+      </div>
+      <div class="progress-line"></div>
+      <div class="progress-step">
+        <div class="step-number">3</div>
+        <div class="step-label">Paiement</div>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="page-header">
+      <h1>Sélectionnez vos adresses</h1>
+      <p class="text-muted">
+        Choisissez une adresse de facturation et une adresse de livraison
+      </p>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-container" *ngIf="userStore.isLoading() || checkoutStore.loading()">
+      <div class="spinner-border text-primary"></div>
+      <p class="mt-3 text-muted">Chargement...</p>
+    </div>
+
+    <!-- Error -->
+    <div class="alert alert-danger" *ngIf="checkoutStore.error()">
+      {{ checkoutStore.error() }}
+    </div>
+
+    <!-- CONTENT -->
+    <div class="addresses-container" *ngIf="!userStore.isLoading() && !checkoutStore.loading()">
+      <div class="row">
+
+        <!-- ================= BILLING ================= -->
+        <div class="col-md-6">
+          <div class="address-section">
+
+            <div class="section-header">
+              <h3>Adresse de facturation</h3>
+              <button class="btn btn-sm btn-outline-primary" (click)="openAddressForm('BILLING')">
+                Nouvelle adresse
+              </button>
+            </div>
+
+            <!-- EMPTY -->
+            <div *ngIf="billingAddresses.length === 0">
+              <p>Aucune adresse</p>
+              <button class="btn btn-primary" (click)="openAddressForm('BILLING')">
+                Ajouter
+              </button>
+            </div>
+
+            <!-- SELECT -->
+            <div *ngIf="billingAddresses.length > 1">
+              <label>Sélectionner</label>
+              <select class="form-select"
+                      (change)="onBillingChange($any($event.target).value)">
+                <option value="">-- Choisir --</option>
+                <option *ngFor="let address of billingAddresses"
+                        [value]="address.id">
+                  {{ address.label }}
+                </option>
+              </select>
+            </div>
+
+            <!-- AUTO SELECT -->
+            <div *ngIf="billingAddresses.length === 1">
+              <p class="text-success">Adresse sélectionnée automatiquement</p>
+
+              <ng-container *ngIf="!selectedBillingAddress">
+                {{ onBillingChange(billingAddresses[0].id) }}
+              </ng-container>
+            </div>
+
+            <!-- DISPLAY -->
+            <div class="address-card"
+                 *ngIf="selectedBillingAddress as address">
+
+              <strong>{{ address.label }}</strong>
+              <p>{{ address.street }}</p>
+              <p *ngIf="address.complement">{{ address.complement }}</p>
+              <p>{{ address.postalCode }} {{ address.city }}</p>
+              <p>{{ address.country }}</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ================= SHIPPING ================= -->
+        <div class="col-md-6">
+          <div class="address-section">
+
+            <div class="section-header">
+              <h3>Adresse de livraison</h3>
+              <button class="btn btn-sm btn-outline-primary" (click)="openAddressForm('SHIPPING')">
+                Nouvelle adresse
+              </button>
+            </div>
+
+            <!-- EMPTY -->
+            <div *ngIf="shippingAddresses.length === 0">
+              <p>Aucune adresse</p>
+              <button class="btn btn-primary" (click)="openAddressForm('SHIPPING')">
+                Ajouter
+              </button>
+            </div>
+
+            <!-- SELECT -->
+            <div *ngIf="shippingAddresses.length > 1">
+              <label>Sélectionner</label>
+              <select class="form-select"
+                      (change)="onShippingChange($any($event.target).value)">
+                <option value="">-- Choisir --</option>
+                <option *ngFor="let address of shippingAddresses"
+                        [value]="address.id">
+                  {{ address.label }}
+                </option>
+              </select>
+            </div>
+
+            <!-- AUTO SELECT -->
+            <div *ngIf="shippingAddresses.length === 1">
+              <p class="text-success">Adresse sélectionnée automatiquement</p>
+
+              <ng-container *ngIf="!selectedShippingAddress">
+                {{ onShippingChange(shippingAddresses[0].id) }}
+              </ng-container>
+            </div>
+
+            <!-- DISPLAY -->
+            <div class="address-card"
+                 *ngIf="selectedShippingAddress as address">
+
+              <strong>{{ address.label }}</strong>
+              <p>{{ address.street }}</p>
+              <p *ngIf="address.complement">{{ address.complement }}</p>
+              <p>{{ address.postalCode }} {{ address.city }}</p>
+              <p>{{ address.country }}</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="checkout-actions">
+
+      <button class="btn btn-outline-secondary" (click)="backToBasket()">
+        Retour au panier
+      </button>
+
+      <div class="col-lg-4">
+        <app-basket-summary 
+          [subtotal]="cartStore.total()"
+          [itemCount]="cartStore.itemCount()"
+          nextLink="/checkout-shipping">
+        </app-basket-summary>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" *ngIf="showAddressForm" (click)="closeAddressForm()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <h3>
+        Nouvelle adresse 
+        {{ addressFormType === 'BILLING' ? 'de facturation' : 'de livraison' }}
+      </h3>
+      <button (click)="closeAddressForm()">X</button>
+    </div>
+
+    <div class="modal-body">
+      <app-address-form
+        [addressType]="addressFormType"
+        [isModal]="true"
+        (onSave)="closeAddressForm(); userStore.loadAddresses()"
+        (onCancel)="closeAddressForm()">
+      </app-address-form>
+    </div>
+
+  </div>
+</div>
