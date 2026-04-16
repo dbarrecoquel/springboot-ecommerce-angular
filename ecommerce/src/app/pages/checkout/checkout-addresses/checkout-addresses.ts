@@ -55,6 +55,9 @@ export class CheckoutAddresses implements OnInit {
       if (this.shippingAddresses.length === 1) {
         this.onShippingChange(this.shippingAddresses[0].id);
       }
+      this.selectedBillingId = this.checkoutStore.billingAddressId();
+      this.selectedShippingId = this.checkoutStore.shippingAddressId();
+      console.log(this.checkoutStore.shippingAddressId());
     });
   }
 
