@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -13,13 +13,14 @@ export class BasketSummary {
   
   @Input() subtotal: number = 0;
   @Input() itemCount: number = 0;
-  @Input() nextLink : string = "";
-  
+  @Output() checkout = new EventEmitter<void>();
   // Frais de livraison (à calculer selon la méthode choisie)
   get shippingCost(): number {
     return this.subtotal > 50 ? 0 : 5.99;
   }
-  
+  onCheckout() {
+    this.checkout.emit();
+  }
   // TVA (20%)
   get tax(): number {
     return this.subtotal * 0.2;

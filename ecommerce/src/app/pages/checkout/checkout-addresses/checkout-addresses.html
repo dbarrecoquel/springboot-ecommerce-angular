@@ -166,7 +166,7 @@
         <app-basket-summary 
           [subtotal]="cartStore.total()"
           [itemCount]="cartStore.itemCount()"
-          nextLink="/checkout-shipping">
+          (checkout)="continue()">
         </app-basket-summary>
       </div>
 

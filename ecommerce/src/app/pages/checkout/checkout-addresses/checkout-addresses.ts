@@ -39,16 +39,26 @@ export class CheckoutAddresses implements OnInit {
   ngOnInit(): void {
 
     if (!this.userStore.isLoggedIn()) return;
-
+  
     if (isPlatformBrowser(this.platformId)) {
       this.cartStore.loadBasket();
     }
-
+  
     this.userStore.loadAddresses();
     this.checkoutStore.loadCheckoutAddresses();
+  
+    setTimeout(() => {
+      if (this.billingAddresses.length === 1) {
+        this.onBillingChange(this.billingAddresses[0].id);
+      }
+  
+      if (this.shippingAddresses.length === 1) {
+        this.onShippingChange(this.shippingAddresses[0].id);
+      }
+    });
   }
 
-  // ✅ getters
+ 
   get billingAddresses(): Address[] {
     return this.userStore.addressesList().filter(a => a.addressType === 'BILLING');
   }
@@ -94,7 +104,7 @@ export class CheckoutAddresses implements OnInit {
       this.selectedShippingId
     );
 
-    this.router.navigate(['/checkout/shipping']);
+    this.router.navigate(['/checkout-shipping']);
   }
 
   backToBasket() {

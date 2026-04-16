@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule,isPlatformBrowser } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CartStore } from '../../stores/cart.store';
 import { BasketSummary } from '../../components/basket-summary/basket-summary';
 import { ProductLineItem } from '../../models/basket/productlineitem.model';
@@ -16,7 +16,7 @@ import { ProductLineItem } from '../../models/basket/productlineitem.model';
 export class Basket implements OnInit {
   
   private platformId = inject(PLATFORM_ID);
-  constructor(public cartStore: CartStore) {}
+  constructor(public cartStore: CartStore,private router: Router) {}
   
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId))
@@ -46,5 +46,8 @@ export class Basket implements OnInit {
   
   getItemTotal(item: ProductLineItem): number {
     return item.quantity * item.unitPrice;
+  }
+  continue(){
+    this.router.navigate(['/checkout-addresses']);
   }
 }
