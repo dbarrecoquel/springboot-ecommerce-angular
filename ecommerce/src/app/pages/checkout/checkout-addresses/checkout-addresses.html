@@ -67,9 +67,9 @@
               <select class="form-select"
               [ngModel]="selectedBillingId"
               (ngModelChange)="onBillingChange($event)">
-                <option value="">-- Choisir --</option>
+                <option [ngValue]="null">-- Choisir --</option>
                 <option *ngFor="let address of billingAddresses"
-                        [value]="address.id">
+                        [ngValue]="address.id">
                   {{ address.label }}
                 </option>
               </select>
@@ -123,9 +123,9 @@
               <select class="form-select"
               [ngModel]="selectedShippingId"
               (ngModelChange)="onShippingChange($event)">
-                <option value="">-- Choisir --</option>
+                <option [ngValue]="null">-- Choisir --</option>
                 <option *ngFor="let address of shippingAddresses"
-                        [value]="address.id">
+                        [ngValue]="address.id">
                   {{ address.label }}
                 </option>
               </select>

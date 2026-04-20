@@ -1,1 +1,155 @@
-<p>checkout-shipping works!</p>
+<div class="checkout-shipping-page">
+    <div class="container">
+      
+      <!-- Progress Bar -->
+      <div class="checkout-progress">
+        <div class="progress-step completed">
+          <div class="step-number">
+            <i class="bi bi-check"></i>
+          </div>
+          <div class="step-label">Adresses</div>
+        </div>
+        <div class="progress-line completed"></div>
+        <div class="progress-step active">
+          <div class="step-number">2</div>
+          <div class="step-label">Livraison</div>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step">
+          <div class="step-number">3</div>
+          <div class="step-label">Paiement</div>
+        </div>
+      </div>
+      
+      <!-- Page Header -->
+      <div class="page-header">
+        <h1>Choisissez votre mode de livraison</h1>
+        <p class="text-muted">Sélectionnez la méthode qui vous convient le mieux</p>
+      </div>
+      
+      <!-- Loading -->
+      <div class="loading-container" *ngIf="checkoutStore.loading()">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+        <p class="mt-3 text-muted">Chargement des méthodes de livraison...</p>
+      </div>
+      
+      <!-- Error -->
+      <div class="alert alert-danger" *ngIf="checkoutStore.error()">
+        <i class="bi bi-exclamation-triangle"></i> {{ checkoutStore.error() }}
+      </div>
+      
+      <!-- Shipping Methods -->
+      <div class="shipping-methods-container" *ngIf="!checkoutStore.loading()">
+        
+        <!-- No methods available -->
+        <div class="empty-state" *ngIf="checkoutStore.shippingMethods().length === 0">
+          <i class="bi bi-inbox"></i>
+          <p>Aucune méthode de livraison disponible</p>
+        </div>
+        
+        <!-- Methods List -->
+        <div class="shipping-methods-list" *ngIf="checkoutStore.shippingMethods().length > 0">
+          
+          <div 
+            *ngFor="let method of checkoutStore.shippingMethods()" 
+            class="shipping-method-card"
+            [class.selected]="isSelected(method)"
+            (click)="selectMethod(method)">
+            
+            <!-- Radio Button -->
+            <div class="method-radio">
+              <input 
+                type="radio" 
+                [id]="'method-' + method.id"
+                [name]="'shipping-method'"
+                [checked]="isSelected(method)"
+                (change)="selectMethod(method)">
+              <label [for]="'method-' + method.id"></label>
+            </div>
+            
+            <!-- Icon -->
+            <div class="method-icon">
+              <i class="bi bi-truck" *ngIf="method.estimatedDays > 3"></i>
+              <i class="bi bi-lightning-charge" *ngIf="method.estimatedDays <= 3"></i>
+            </div>
+            
+            <!-- Content -->
+            <div class="method-content">
+              <h3 class="method-name">{{ method.name }}</h3>
+              <p class="method-description">{{ method.description }}</p>
+              <div class="method-details">
+                <span class="detail-item">
+                  <i class="bi bi-calendar"></i>
+                  Livraison en {{ method.estimatedDays }} jour{{ method.estimatedDays > 1 ? 's' : '' }}
+                </span>
+                <span class="detail-item" *ngIf="method.destinationCountry !== 'ALL'">
+                  <i class="bi bi-geo-alt"></i>
+                  {{ method.destinationCountry }}
+                </span>
+              </div>
+            </div>
+            
+            <!-- Price -->
+            <div class="method-price">
+              <span class="price-value" *ngIf="method.cost > 0">
+                {{ method.cost | currency:'EUR' }}
+              </span>
+              <span class="price-free" *ngIf="method.cost === 0">
+                GRATUIT
+              </span>
+            </div>
+            
+            <!-- Selected Badge -->
+            <div class="selected-badge" *ngIf="isSelected(method)">
+              <i class="bi bi-check-circle-fill"></i>
+            </div>
+            
+          </div>
+          
+        </div>
+        
+        <!-- Summary -->
+        <div class="shipping-summary" *ngIf="checkoutStore.selectedShippingMethod() as selected">
+          <div class="summary-card">
+            <h3>Récapitulatif</h3>
+            <div class="summary-line">
+              <span>Méthode sélectionnée</span>
+              <strong>{{ selected.name }}</strong>
+            </div>
+            <div class="summary-line">
+              <span>Délai de livraison</span>
+              <strong>{{ selected.estimatedDays }} jour{{ selected.estimatedDays > 1 ? 's' : '' }}</strong>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-total">
+              <span>Frais de livraison</span>
+              <span class="total-value" *ngIf="selected.cost > 0">
+                {{ selected.cost | currency:'EUR' }}
+              </span>
+              <span class="total-free" *ngIf="selected.cost === 0">
+                GRATUIT
+              </span>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- Actions -->
+      <div class="checkout-actions">
+        <button class="btn btn-outline-secondary" (click)="back()">
+          <i class="bi bi-arrow-left"></i> Retour
+        </button>
+        
+        <button 
+          class="btn btn-primary btn-lg" 
+          (click)="continue()"
+          [disabled]="!checkoutStore.selectedShippingMethodId()">
+          Continuer vers le paiement <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+      
+    </div>
+  </div>

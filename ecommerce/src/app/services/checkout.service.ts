@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 import { Basket} from '../models/basket/basket.model';
+import { ShippingMethod } from '../models/shippingmethod/shippingmethod.model';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +29,18 @@ export class CheckoutService {
         billingAddressId,
         shippingAddressId
       }
+    );
+  }
+
+  getShippingMethods(): Observable<ShippingMethod[]> {
+    return this.httpClient.get<ShippingMethod[]>(
+      `${environment.apiUrl}/api/checkout/shipping-methods`
+    );
+  }
+  setShippingMethod(shippingMethodId: number): Observable<any> {
+    return this.httpClient.post(
+      `${environment.apiUrl}/api/checkout/shipping`,
+      { shippingMethodId }
     );
   }
 }

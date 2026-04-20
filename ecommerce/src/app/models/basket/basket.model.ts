@@ -8,5 +8,6 @@ export interface Basket {
     billingAddressId: number | null;
     shippingAddressId: number | null;
     total?: number;
+    shippingMethodId : number
 
 }
